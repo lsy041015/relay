@@ -1,6 +1,6 @@
 # Main Code Review Worksheet
 
-Use this worksheet for Astra's task or whole-branch review. It replaces the
+Use this worksheet for the main agent's task or whole-branch review. It replaces the
 old code-reviewer dispatch template. Fill every field before reviewing.
 
 ```text
@@ -34,13 +34,13 @@ misunderstood behavior. Check changed interfaces and relevant call paths for:
 Treat a worker report as an unverified claim. Confirm its test commands,
 exit codes, and relevant output. Run a focused test only for a concrete doubt
 the report cannot answer. Do not create a subagent, another reviewer, or a
-second opinion. Astra owns this review and decides whether feedback is valid.
+second opinion. The main agent owns this review and decides whether feedback is valid.
 
 The specification expresses the required behavior but may not enumerate every
 input. Grade silent behavior by the result a reasonable user should receive.
 List any requirement you cannot verify from the diff as a verification gap.
 Before the verdict, list any behavior you considered but set aside as outside
-the plan or spec and why; Astra must rule on each item rather than silently
+the plan or spec and why; the main agent must rule on each item rather than silently
 drop it.
 
 ## Output
@@ -70,7 +70,7 @@ Reasoning: <one or two technical sentences>
 ```
 
 Critical and Important findings go to the existing implementation worker as a
-focused `followup_task` when one exists; Astra may fix a small issue inline.
-After two failed fix attempts with the same root cause, record the Astra Ruling
+focused `followup_task` when one exists; the main agent may fix a small issue inline.
+After two failed fix attempts with the same root cause, record a main-agent Ruling
 and change the plan or report the blocker. Minor findings and out-of-scope
 observations go in the ledger for final triage.

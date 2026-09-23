@@ -1,6 +1,6 @@
 # Main Spec Review Worksheet
 
-Use this worksheet in Astra after writing a design specification. It replaces
+Use this worksheet in the main session after writing a design specification. It replaces
 the old spec-reviewer dispatch.
 
 ```text
@@ -20,5 +20,5 @@ Issues: <section, concrete problem, planning effect> | None
 Recommendations: <advisory improvements> | None
 ```
 
-This is an Astra self-review. Do not create a reviewer, planner, analyst, or
+This is a main-agent self-review. Do not create a reviewer, planner, analyst, or
 other non-implementation worker.

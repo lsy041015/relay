@@ -44,6 +44,10 @@ slug=$(basename "$plan" .md)
 
 root=$(git rev-parse --show-toplevel)
 base="$root/.superpowers/sdd"
+[ ! -L "$root/.superpowers" ] && [ ! -L "$base" ] || {
+  echo "workspace path contains a symlink: $base" >&2
+  exit 2
+}
 
 # Normalize the plan path (physical directory, so relative/absolute/../
 # spellings of one plan compare equal) and express it as the marker value:
@@ -59,6 +63,10 @@ esac
 # marker must name this plan; a missing marker means a new workspace or a
 # pre-marker legacy one, and either way the plan claims it by writing one.
 owns() {
+  [ ! -L "$1" ] && [ ! -L "$1/plan-path" ] || {
+    echo "workspace path contains a symlink: $1" >&2
+    exit 2
+  }
   if [ -e "$1/plan-path" ]; then
     [ "$(cat "$1/plan-path")" = "$plan_id" ]
   else
@@ -78,5 +86,10 @@ if ! owns "$dir"; then
   fi
 fi
 
-printf '*\n' > "$base/.gitignore"
+[ ! -L "$base/.gitignore" ] || { echo "workspace ignore file is a symlink" >&2; exit 2; }
+if [ ! -e "$base/.gitignore" ]; then
+  printf '*\n' > "$base/.gitignore"
+elif ! grep -Fxq '*' "$base/.gitignore"; then
+  printf '\n*\n' >> "$base/.gitignore"
+fi
 CDPATH= cd -- "$dir" && pwd

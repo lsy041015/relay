@@ -6,8 +6,9 @@ not an API contract.
 
 ## One delegated role
 
-The main Astra session owns planning, exploration, diagnosis, review,
-re-review, integration, and final verification. A delegated call is for a
+The main session keeps the user's selected model and reasoning effort and owns
+planning, exploration, diagnosis, review, re-review, integration, and final
+verification. A delegated call is for a
 bounded implementation worker only. Do not dispatch a reviewer, analyst,
 planner, explorer, or nested helper.
 
@@ -17,7 +18,7 @@ When the work is a clear implementation unit, make the dispatch explicit:
 spawn_agent(
   task_name="implementation_task_2",
   message="<goal, exact scope, acceptance checks, tests, and report path>",
-  model="gpt-5.6-luna",
+  model="gpt-6-luna",
   reasoning_effort="xhigh",
   fork_turns="none"
 )
@@ -26,22 +27,23 @@ spawn_agent(
 `fork_turns = "none"` keeps the worker's context limited to the explicit
 brief. It does not promise zero setup cost or remove system and tool rules.
 The creation call's required settings are exactly `model =
-"gpt-5.6-luna"`, `reasoning_effort = "xhigh"`, and `fork_turns = "none"`.
+"gpt-6-luna"`, `reasoning_effort = "xhigh"`, and `fork_turns = "none"`.
 Never omit the model or effort when dispatching this role, and never silently
-substitute another model if the requested preset is unavailable. Tell Astra
-that the requested work cannot be delegated and continue inline when possible.
+substitute another model if the requested preset is unavailable. Continue inline
+with the main session's selected model and effort when possible, and report the
+delegation limit.
 
 ## Fixes and lifecycle
 
-Record the worker id. When Astra's review finds a concrete defect, send the
+Record the worker id. When the main agent's review finds a concrete defect, send the
 finding to the same worker with `followup_task`; include the file, location,
 failure, acceptance condition, and covering test. `followup_task` addresses the
 existing worker; do not pass model, effort, or fork settings to that follow-up.
 A follow-up is a new implementation turn, not a new review seat. The worker
-appends its result and test evidence to the report. Astra reviews the actual
+appends its result and test evidence to the report. The main agent reviews the actual
 fix diff again.
 
-If two failed fix attempts have the same root cause, stop retrying. Astra changes
+If two failed fix attempts have the same root cause, stop retrying. The main agent changes
 the diagnosis or plan, or fixes the small issue inline;
 do not promote the worker or create a fresh one merely to obtain different
 eyes. Explicitly requested independent parallel implementation is the only
@@ -51,7 +53,7 @@ settings with disjoint files and state.
 ## Waiting and evidence
 
 Use the host's event wait for a running worker rather than short polling.
-While Astra has useful local work, continue it; when idle, use one bounded wait
+While the main agent has useful local work, continue it; when idle, use one bounded wait
 and reconcile the worker's report. Do not treat an unverified worker summary
 as proof: inspect the actual diff, affected call paths, and reported test
 output. Keep full logs in a file when they are large and summarize only the

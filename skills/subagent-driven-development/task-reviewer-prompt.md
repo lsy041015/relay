@@ -1,6 +1,6 @@
 # Main Task Review Worksheet
 
-Use this worksheet in the Astra session after an implementation worker
+Use this worksheet in the main session after an implementation worker
 reports `DONE`. It replaces the old task-reviewer dispatch. Read the brief,
 worker report, and one review package; inspect source outside the package only
 for a named, concrete risk.
@@ -32,10 +32,10 @@ even when a committed range exists; never force a dummy commit.
    and does not add speculative abstraction, dependencies, or scope.
 
 Do not invent an independent reviewer or ask another agent to inspect a part
-of the diff. Astra owns this review and the subsequent re-review. If a finding
+of the diff. The main agent owns this review and the subsequent re-review. If a finding
 is real, send a precise fix to the same implementation worker with
 `followup_task`. If two failed fix attempts have the same root cause, stop and
-write an Astra Ruling before changing the plan or fixing inline.
+write a main-agent Ruling before changing the plan or fixing inline.
 
 ## Output
 

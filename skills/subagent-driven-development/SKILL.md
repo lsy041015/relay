@@ -6,7 +6,7 @@ description: Use when an approved implementation plan has a clear unit that can 
 # Subagent-Driven Development
 
 Use this workflow when a plan has a bounded implementation result that is
-worth delegating. Astra remains the controller: it decides scope, reads the
+worth delegating. The main agent remains the controller: it decides scope, reads the
 plan, reviews every change, and integrates the result. Luna is an
 implementation worker, not a second controller.
 
@@ -17,16 +17,17 @@ requested independent parallel implementation.
 
 ## Invariants
 
-- The main session stays on `gpt-6-astra` and keeps its selected effort.
-- Every worker creation explicitly sets `model = "gpt-5.6-luna"`,
+- The main session keeps the user's selected model and reasoning effort; this
+  workflow does not switch or override either setting.
+- Every worker creation explicitly sets `model = "gpt-6-luna"`,
   `reasoning_effort = "xhigh"`, and `fork_turns = "none"`.
 - Workers never spawn workers, reviewers, analysts, planners, or helpers. They
   may self-review their diff and investigate implementation failures as part
   of the assigned task.
-- Astra performs task review and re-review from the actual diff and test
+- The main agent performs task review and re-review from the actual diff and test
   evidence. Do not create a separate review agent or claim independent review.
 - Reuse one worker for related tasks and fixes. After two failed fix attempts with
-  the same root cause, Astra changes the diagnosis or takes the work inline;
+  the same root cause, the main agent changes the diagnosis or takes the work inline;
   there is no model escalation or fresh-worker rescue path.
 - TDD, systematic debugging, verification-before-completion, user-change
   preservation, and safety requirements remain in force.
@@ -62,7 +63,7 @@ outside the user's authorized scope.
 
 ### 1. Choose the execution path
 
-Keep a one-file mechanical edit, lookup, or short verification in Astra. For a
+Keep a one-file mechanical edit, lookup, or short verification in the main session. For a
 clear multi-step implementation result, dispatch one Luna worker using
 `implementer-prompt.md`. The brief must contain only the goal, acceptance
 conditions, exact allowed files, interfaces and settled decisions, tests,
@@ -90,14 +91,14 @@ Report: <absolute report path>
 The detailed report keeps full test output and, when applicable, RED/GREEN
 evidence. The short response is not a substitute for the report or the diff.
 
-`BLOCKED` or `NEEDS_DECISION` means Astra supplies missing context or decides
+`BLOCKED` or `NEEDS_DECISION` means the main agent supplies missing context or decides
 the plan change. It does not trigger a different model. If two fix attempts
-fail for the same root cause, Astra records the failure and replans or
+fail for the same root cause, the main agent records the failure and replans or
 implements directly.
 
-### 3. Astra review
+### 3. Main-session review
 
-After a `DONE` result, Astra runs `scripts/review-package PLAN_FILE BASE HEAD`
+After a `DONE` result, the main agent runs `scripts/review-package PLAN_FILE BASE HEAD`
 when the task has a committed range and reads the actual package. Also inspect
 all working-tree changes, even when commits exist: `git diff --cached`, `git diff`, and
 `git ls-files --others --exclude-standard`, then read each untracked file that
@@ -115,7 +116,7 @@ create a dummy commit. Review requirements and quality together:
   unnecessarily replaced.
 
 Use the task review worksheet in `task-reviewer-prompt.md` as a checklist. It
-is an Astra worksheet; do not dispatch it. Record the verdict and any Minor
+is a main-agent worksheet; do not dispatch it. Record the verdict and any Minor
 finding in the ledger. A Critical or Important finding, a real spec gap, or a
 requirement that cannot be verified enters the fix loop.
 
@@ -123,12 +124,12 @@ requirement that cannot be verified enters the fix loop.
 
 Send concrete findings to the same worker with `followup_task`, using
 `re-review-prompt.md` to define the scope. The worker appends a fix report,
-runs the covering tests, and returns the same status contract. Astra reads the
+runs the covering tests, and returns the same status contract. The main agent reads the
 fix diff and re-reviews only the findings and touched code. New findings in the
 fix diff join the list; unrelated observations go in the ledger.
 
-After two failed fix attempts with the same root cause, stop the loop and write an
-Astra `Ruling:`. Change the plan or implement the smallest safe correction
+After two failed fix attempts with the same root cause, stop the loop and write a
+main-agent `Ruling:`. Change the plan or implement the smallest safe correction
 inline. Count post-review fix attempts; the initial implementation is not a
 fix round. Never dispatch a fresh implementer or a higher-tier child as a retry.
 
@@ -144,17 +145,17 @@ Rulings for the final review.
 
 ## Final review and completion
 
-After all tasks, Astra creates one whole-branch review package from the branch
+After all tasks, the main agent creates one whole-branch review package from the branch
 merge base when there is a committed range and reviews it with
 `requesting-code-review/code-reviewer.md` as a checklist. Always also inspect
 staged and unstaged diffs plus untracked task files directly. If the work is
 entirely uncommitted, skip the commit-only helper; do not force a dummy commit.
 No final reviewer is created.
-Astra applies `superpowers-astra-luna:verification-before-completion` to the
+The main agent applies `superpowers-astra-luna:verification-before-completion` to the
 required final checks and the combined state. Check every ledger Ruling and
 deferred Minor, and record any final fix. A remaining Critical or Important
 issue is either corrected inline or sent as a concrete follow-up to the
-existing Luna worker; Astra re-reviews the actual fix. There is no second
+existing Luna worker; the main agent re-reviews the actual fix. There is no second
 review agent or unlimited fix cycle.
 
 Report verification evidence, failures, and environment limits.
@@ -170,7 +171,7 @@ Task 2: add retry behavior
 Brief: /workspace/.superpowers/sdd/retry/task-2-brief.md
 Allowed files: src/retry.ts, test/retry.test.ts
 Acceptance: bounded retries, abort preserved, focused test command
-Worker: gpt-5.6-luna / xhigh / fork_turns=none
+Worker: gpt-6-luna / xhigh / fork_turns=none
 Report: /workspace/.superpowers/sdd/retry/task-2-report.md
 ```
 

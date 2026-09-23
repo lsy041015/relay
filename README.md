@@ -1,69 +1,93 @@
 # Relay
 
-**초기 공개판 · 실험용.** 구현자 재사용과 메인 세션 리뷰로 중복 작업을 줄이는 Codex 워크플로입니다. 현재 설치 식별자와 스킬 namespace는 `superpowers-astra-luna`를 유지합니다.
+Codex에서 설계·리뷰는 **사용자가 선택한 메인 모델과 추론 수준**으로 수행하고, 범위가 명확한 구현은 필요할 때 **GPT-6 Luna `xhigh` 구현자**에게 맡기는 스킬 플러그인입니다. [Jesse Vincent의 Superpowers](https://github.com/obra/superpowers) 6.4.1을 기반으로 한 개인 포크이며, 공식 OpenAI 또는 Superpowers 배포판은 아닙니다.
 
-Superpowers 6.4.1의 개인용 Codex 포크. 메인 Astra가 설계·계획·리뷰를 맡고, 범위가 정해진 구현만 Luna xhigh 서브에이전트에 위임합니다.
+> **상태:** 개인 환경에서 검증 중인 실험판. 주간 Codex 사용량 절감은 아직 입증되지 않았습니다.
 
-| 역할 | 실행 위치 | 모델 |
+## 작동 방식
+
+| 단계 | 담당 | 적용 |
 |---|---|---|
-| 요구사항·설계·계획·진단 판단 | 메인 대화 | `gpt-6-astra` |
-| 코드 수정·관련 테스트·수정 피드백 반영 | 구현 서브에이전트 | `gpt-5.6-luna`, `xhigh` |
-| 요구사항 검토·코드 리뷰·통합·최종 검증 | 메인 대화 | `gpt-6-astra` |
+| 요구사항 판단, 설계, 계획 | 메인 대화 | 현재 선택한 모델·추론 수준 유지 |
+| 범위가 정해진 코드 수정과 관련 테스트 | 구현자 1명 | 호스트가 지원하면 `gpt-6-luna`, `xhigh`, `fork_turns="none"` |
+| 코드 리뷰, 결과 통합, 최종 검증 | 메인 대화 | 현재 선택한 모델·추론 수준 유지 |
 
-## 사용
+메인은 작은 수정이나 읽기 전용 작업을 직접 처리할 수 있습니다. 구현자를 만들면 필요한 목표·파일·제약·검증 기준만 전달하고, 관련 수정에 같은 구현자를 재사용합니다. 독립된 작업의 병렬 구현은 사용자가 명시적으로 요청한 경우에만 수행합니다. 별도 리뷰어·계획자·진단 에이전트와 중첩 위임은 사용하지 않습니다.
 
-1. Codex에서 메인 모델을 Astra로 선택합니다. 플러그인은 현재 대화의 모델을 바꾸지 못합니다.
-2. 원본 Superpowers를 비활성화하고 `superpowers-astra-luna@personal`만 활성화합니다.
-3. 새 대화에서 작업을 요청합니다. 기존에 승인한 요구사항·설계는 그대로 사용합니다.
+이 플러그인은 **15개 스킬과 보조 스크립트**로 구성됩니다. MCP 서버, 외부 계정 연결, 자동 실행 훅은 포함하지 않습니다. 모델 선택은 스킬이 에이전트에게 요청하는 운영 규칙입니다. 플러그인이 현재 대화의 모델을 바꾸거나 호스트의 모델 지원·권한을 강제하지는 않습니다.
 
-일반 개발은 구현자 한 명을 생성하고 관련 작업·수정에 재사용합니다. 작은 수정은 메인에서 직접 처리할 수 있습니다. 사용자가 독립된 작업의 병렬 구현을 요청한 경우에만 구현자를 추가합니다. 계획·리뷰·진단·스킬 평가용 서브에이전트와 중첩 위임은 만들지 않습니다.
+| 용도 | 스킬 |
+|---|---|
+| 진입·설계·계획 | [using-superpowers](skills/using-superpowers/SKILL.md), [brainstorming](skills/brainstorming/SKILL.md), [writing-plans](skills/writing-plans/SKILL.md) |
+| 구현·격리·테스트 | [subagent-driven-development](skills/subagent-driven-development/SKILL.md), [executing-plans](skills/executing-plans/SKILL.md), [using-git-worktrees](skills/using-git-worktrees/SKILL.md), [test-driven-development](skills/test-driven-development/SKILL.md) |
+| 진단·검토·검증 | [systematic-debugging](skills/systematic-debugging/SKILL.md), [requesting-code-review](skills/requesting-code-review/SKILL.md), [receiving-code-review](skills/receiving-code-review/SKILL.md), [verification-before-completion](skills/verification-before-completion/SKILL.md), [diagnosing-superpowers](skills/diagnosing-superpowers/SKILL.md) |
+| 종료·확장 | [finishing-a-development-branch](skills/finishing-a-development-branch/SKILL.md), [dispatching-parallel-agents](skills/dispatching-parallel-agents/SKILL.md), [writing-skills](skills/writing-skills/SKILL.md) |
 
-구현자 생성 시 `model="gpt-5.6-luna"`, `reasoning_effort="xhigh"`, `fork_turns="none"`을 명시합니다. 필요한 목표·파일·제약·검증 기준만 전달합니다. 같은 원인에 대한 수정이 두 차례 실패하면 메인이 원인과 계획을 다시 판단합니다. TDD, 원인 분석, 검증, 기존 사용자 변경 보존 원칙은 유지합니다.
+## 설치
 
-계획의 작업 제목은 `### Task 1: 입력 검증`처럼 작성합니다. 작업 추출기는 코드 블록 안의 예시 제목을 작업 경계로 취급하지 않으며, 안전하게 추출할 수 없는 입력은 오류로 반환합니다.
-
-검증 결과는 메인이 실행 근거와 대상 상태를 확인한 뒤 재사용할 수 있습니다. 코드·미커밋 변경·신규 파일·관련 환경이나 검증 범위가 달라졌으면 필요한 검사를 다시 실행합니다. 긴 로그는 파일로 남기고 대화에는 핵심 결과와 경로를 전달합니다.
-
-## 설치·업데이트
-
-로컬 원본은 `~/plugins/superpowers-astra-luna/`, 기본 개인 마켓플레이스는 `~/.agents/plugins/marketplace.json`입니다. 등록 후 설치 명령:
+GitHub 저장소에 포함된 [Relay 마켓플레이스](.agents/plugins/marketplace.json)를 Codex에 등록합니다.
 
 ```bash
-rtk proxy codex plugin add superpowers-astra-luna@personal
+codex plugin marketplace add lsy041015/relay
+codex plugin add superpowers-astra-luna@relay
 ```
 
-스킬 변경은 로컬 원본에 적용하고, Codex의 `plugin-creator/scripts/update_plugin_cachebuster.py`로 버전을 갱신한 뒤 재설치합니다. 캐시 파일 직접 수정은 업데이트 시 사라질 수 있습니다. 원본 Superpowers 업데이트가 이 포크에 자동 병합되지는 않습니다.
+Codex 플러그인 화면에서 `Relay` 소스를 선택해 설치해도 됩니다. 설치 후 **새 대화**를 시작해야 갱신된 스킬을 읽습니다. 기존 Superpowers 또는 개인 로컬판 `superpowers-astra-luna@personal`을 사용 중이라면 중복 활성화를 피하도록 한쪽만 활성화하세요. 저장소를 GitHub에 올리는 것과 OpenAI의 공개 플러그인 디렉터리에 게시하는 것은 별개입니다. 이 저장소는 GitHub 마켓플레이스 설치 경로를 제공합니다. 설치 구조는 [OpenAI 공식 플러그인 문서](https://developers.openai.com/plugins/build/plugins)를 따릅니다.
 
-되돌릴 때는 이 개인판을 비활성화하고 원본 Superpowers를 활성화합니다. 공통 지침을 함께 수정했다면 해당 예외 규칙도 복구합니다. 두 플러그인을 동시에 활성화하지 마세요.
-
-## 검증 범위와 한계
-
-플러그인 폴더에서 회귀 검사를 실행할 수 있습니다. Python 표준 라이브러리와 기존 Bash·awk·Git만 사용합니다.
+업데이트:
 
 ```bash
-rtk proxy python3 tests/test_task_brief.py
-rtk proxy python3 tests/test_worktree_instructions.py
+codex plugin marketplace upgrade relay
+codex plugin add superpowers-astra-luna@relay
 ```
 
-첫 검사는 코드 펜스·한국어 제목·번호형 개요·LF/CRLF 원문 보존·작업 번호·실패 시 이전 출력 보존을 확인합니다. 두 번째는 실제 지침의 명령 블록을 임시 Git 저장소에서 실행해 폴더 선택·안전 검사·하위 폴더에서의 생성을 확인합니다. 다른 버전과 비교하려면 마지막 인수로 각각 `task-brief` 또는 `using-git-worktrees/SKILL.md` 경로를 전달합니다.
+### 로컬 개발판
 
-모델 지정은 위임 도구 호출에 명시하는 운영 규칙입니다. 플러그인이 호스트의 모델 선택이나 권한을 강제하지는 않습니다. 호스트가 해당 모델·추론 수준을 지원하지 않으면 임의의 다른 모델로 대체하지 않고 메인에서 처리하거나 제한을 알립니다.
+개발자는 원본을 `~/plugins/superpowers-astra-luna`처럼 원하는 위치에 복제하고 `~/.agents/plugins/marketplace.json`의 개인 마켓플레이스에 이 플러그인 항목을 추가할 수 있습니다. `source.path`는 `~/.agents/plugins/`가 아니라 **홈 디렉터리 기준** 상대 경로입니다. 예를 들어 원본이 `~/plugins/superpowers-astra-luna`에 있으면 `./plugins/superpowers-astra-luna`를 사용합니다. 기존 마켓플레이스 파일의 다른 항목은 보존하세요.
 
-검토용 에이전트 생성과 전체 대화 복제를 줄이는 구조입니다. 실제 토큰·주간 한도 절감률은 작업 길이, 수정 횟수, 호스트의 사용량 계산에 따라 달라집니다. 특정 절감률을 보장하지 않습니다.
+로컬 스킬을 고친 뒤에는 Codex의 `plugin-creator/scripts/update_plugin_cachebuster.py`로 버전의 캐시 식별자를 갱신하고 `codex plugin add superpowers-astra-luna@personal`로 재설치합니다. 설치 캐시를 직접 고치면 다음 업데이트에 사라집니다.
 
-실측 비교 시 같은 작업·검증 범위를 사용하고 모델·추론 설정, 메인과 구현자의 합산 토큰, 재시도 횟수, 전체 소요 시간을 기록합니다. 관측할 수 없는 값은 미측정으로 남깁니다. 본문 길이나 실행 시간 감소를 주간 한도 절감률로 환산하지 않습니다.
+## 사용 예
 
-## 알려진 문제와 개선 계획
+```text
+현재 메인 모델과 추론 수준으로 설계·리뷰해줘.
+구현 범위가 정해지면 Relay 규칙에 따라 GPT-6 Luna xhigh 구현자에게 맡기고,
+메인 대화에서 테스트 근거와 최종 변경을 확인해줘.
+```
 
-현재 버전은 개인 환경에서 검증한 소스를 먼저 공개한 상태입니다. 다음 항목을 점차 개선합니다.
+설계가 이미 정해진 작은 수정에는 별도 설계 승인 절차를 추가하지 않습니다. 다단계 작업에는 검증 가능한 계획을 남깁니다. 계획의 작업 제목은 `### Task 1: 입력 검증`처럼 작성하면 작업 추출기가 인식합니다. 코드 블록 안의 예시 제목은 작업 경계로 취급하지 않습니다.
 
-- **Worktree 정리:** `finishing-a-development-branch`는 폴더 이름으로 소유권을 추정합니다. `.worktrees/` 아래의 사용자 생성 worktree도 정리 대상으로 판단할 수 있으므로, 수정 전에는 해당 스킬의 자동 정리를 사용하지 말고 직접 소유권을 확인하세요. 생성 기록 기반 보호를 추가할 예정입니다.
-- **설치:** 위 설치 절차는 이미 등록된 개인 마켓플레이스를 전제합니다. 새 환경의 최초 등록·설치 안내와 지원 환경 검증을 보완할 예정입니다.
-- **문제 신고:** 진단 스킬의 자동 이슈 등록 예제는 아직 원본 저장소를 가리킵니다. 이 포크의 문제는 [Relay Issues](https://github.com/lsy041015/relay/issues)에 직접 등록하세요. 자동 등록 경로를 수정할 예정입니다.
-- **의존성:** 예시의 `rtk proxy`는 RTK가 필요합니다. RTK를 쓰지 않으면 뒤의 원래 명령을 실행할 수 있습니다. 일부 worktree 명령은 GNU `realpath -m`을, 진단 흐름은 별도 context-mode 플러그인을 전제합니다. 의존성 안내와 대안을 보완할 예정입니다.
-- **검증:** 회귀 검사 12개, 스킬 형식 검사 15개, 셸 문법 검사 8개를 통과했습니다. Luna `xhigh` 구현 → 메인 리뷰 → 같은 구현자 수정 → 재검증 사례를 확인했습니다. 전 기능·다중 OS·모든 실패 복구 경로를 검증한 것은 아닙니다.
-- **사용량:** 원본 대비 주간 한도 절감률은 아직 측정하지 않았습니다. 모델·문맥·캐싱·재시도와 결과 품질을 통제한 비교가 필요합니다.
+검증은 실행 명령·대상 상태·종료 코드·결과를 확인합니다. 코드, 미커밋 변경, 신규 파일 또는 관련 환경이 달라졌으면 영향받은 검사를 다시 수행합니다. 실패한 검사를 통과로 요약하지 않습니다.
 
-## 출처·라이선스
+## 안전장치
 
-[Jesse Vincent의 Superpowers](https://github.com/obra/superpowers) 6.4.1에서 파생했습니다. 공식 배포본이 아닙니다. 원본 저작권과 [MIT 라이선스](LICENSE)를 보존합니다. 원본 설명은 [UPSTREAM_README.md](UPSTREAM_README.md)에 보관되어 있으며, 이 포크의 운영 규칙은 현재 README와 `skills/`를 따릅니다.
+- Relay가 만든 Git worktree의 Git 관리 디렉터리에 소유 표식을 기록합니다. [정리 절차](skills/finishing-a-development-branch/SKILL.md)는 표식과 실제 경로가 일치할 때만 해당 worktree를 제거합니다. 경로 이름만으로 사용자 worktree를 Relay 소유로 판단하지 않습니다.
+- [SDD 작업공간 스크립트](skills/subagent-driven-development/scripts/sdd-workspace)는 작업공간 경로의 심볼릭 링크를 거부하고 기존 `.gitignore` 내용을 보존합니다.
+- [작업 완료 스크립트](skills/executing-plans/scripts/task-done)는 테스트 명령이 성공하면 출력이 없어도 진행 기록을 남기며, 실패하면 완료로 기록하지 않습니다.
+
+## 검증과 지원 범위
+
+저장소 루트에서 실행:
+
+```bash
+python3 tests/test_task_brief.py
+python3 tests/test_worktree_instructions.py
+python3 tests/test_worktree_cleanup.py
+python3 tests/test_sdd_safety.py
+```
+
+현재 회귀 검사 **16개**, 스킬 frontmatter 검사 **15개**, Bash 문법 검사 **8개**를 통과했습니다. 테스트는 작업 추출, 임시 Git 저장소에서의 worktree 생성·정리, SDD 경로 안전성, 출력 없는 성공 명령 기록을 다룹니다. 이 결과는 모든 스킬의 실제 모델 위임, 다중 운영체제, 모든 실패 복구 경로를 검증한 것은 아닙니다.
+
+실행 경로에 따라 Git·Bash가 필요합니다. 회귀 검사는 Python 3 표준 라이브러리를 사용합니다. Git worktree 대체 절차는 GNU `realpath -m`을 사용하므로 해당 명령이 없는 환경에서는 호스트의 기본 worktree 기능을 우선 사용하세요. 시각적 설계 보조에는 Node.js가, 긴 세션 진단의 일부 경로에는 별도 `context-mode` 도구가 필요할 수 있습니다. `gpt-6-luna`와 `xhigh`가 호스트에서 지원되지 않으면 임의의 다른 모델로 바꾸지 않고 메인에서 처리하거나 제한을 알립니다.
+
+## 주간 사용량 측정
+
+Relay는 검토용 에이전트 생성과 전체 대화 복제를 줄이도록 설계됐습니다. **주간 한도 절감률은 아직 측정되지 않았고 보장되지 않습니다.** Codex 계정의 7일 창 사용률(`usedPercent`)이 비교 지표입니다. 적용 전의 완료된 7일 창 기준값이 없으며, 계정 전체 사용률에는 Relay 외 작업도 포함됩니다.
+
+비교하려면 각 창의 종료 직전 사용률과 수행 작업량, 모델·추론 설정, 재시도와 검증 범위를 함께 기록해야 합니다. 토큰 수, 본문 길이, 실행 시간을 주간 한도 절감률로 환산하지 않습니다. 현재 자료로 절감률을 수치화하면 근거 없는 추정입니다.
+
+## 이슈·출처
+
+Relay 동작 문제는 [Relay Issues](https://github.com/lsy041015/relay/issues)에 보고하세요. 원본 Superpowers 문제를 상위 프로젝트에 보고할지는 별도로 판단해야 합니다.
+
+원본: [Jesse Vincent의 Superpowers](https://github.com/obra/superpowers) 6.4.1. 원본 저작권과 [MIT 라이선스](LICENSE)를 보존했습니다. 원본 설명은 [UPSTREAM_README.md](UPSTREAM_README.md)에 있습니다. 이 포크의 운영 규칙은 현재 README와 `skills/`를 따릅니다.

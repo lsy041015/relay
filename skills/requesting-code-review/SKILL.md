@@ -5,9 +5,9 @@ description: Use when a completed change needs a requirements and quality review
 
 # Requesting Code Review
 
-In the Astra/Luna edition, requesting review means preparing an evidence-based
-review pass for the main Astra session. It does not create a reviewer agent.
-Astra reviews the actual diff, traces relevant call paths, and performs any
+In the Relay workflow, requesting review means preparing an evidence-based
+review pass for the main session. It does not create a reviewer agent.
+The main agent reviews the actual diff, traces relevant call paths, and performs any
 necessary re-review after the existing Luna implementation worker fixes it.
 
 ## When to review
@@ -18,7 +18,7 @@ necessary re-review after the existing Luna implementation worker fixes it.
 - after a worker fix, scoped to the finding and fix diff.
 
 Small lookups or text-only edits may be checked inline. Never claim an
-independent review when Astra performed the review.
+independent review when the main agent performed the review.
 
 ## Review steps
 
@@ -45,11 +45,11 @@ independent review when Astra performed the review.
    - Minor: a useful polish item that does not block the task.
 6. Record the verdict and Minor items in the ledger. Send Critical or
    Important fixes to the same worker with `followup_task`, including file,
-   location, cause, acceptance condition, and covering tests. Astra performs
+   location, cause, acceptance condition, and covering tests. The main agent performs
    the scoped re-review.
 
-If two failed fix attempts have the same root cause, stop retrying and make an
-Astra Ruling: change the plan, fix a small issue inline, or report the blocker.
+If two failed fix attempts have the same root cause, stop retrying and record
+a main-agent `Ruling:`: change the plan, fix a small issue inline, or report the blocker.
 Do not create a fresh reviewer, a fresh implementer, or a higher-tier child.
 
 ## Review report

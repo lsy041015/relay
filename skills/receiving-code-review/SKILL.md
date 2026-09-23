@@ -5,7 +5,7 @@ description: Use when review feedback arrives and its correctness, scope, or imp
 
 # Receiving Code Review
 
-Review feedback is input to Astra's technical decision. Verify it against the
+Review feedback is input to the main agent's technical decision. Verify it against the
 actual code, requirements, tests, and user decisions before changing anything.
 Do not perform agreement or blind implementation.
 
@@ -22,10 +22,10 @@ Do not perform agreement or blind implementation.
 
 For a delegated task, send the concrete fix to the same Luna worker with
 `followup_task`: include the finding, file and location, why it matters, the
-acceptance condition, and the covering test. Astra performs the re-review.
+acceptance condition, and the covering test. The main agent performs the re-review.
 Small corrections may stay inline. Do not create a new reviewer, fixer,
 analyst, or model escalation. If two failed fix attempts have the same root cause,
-record an Astra `Ruling:` and re-evaluate the plan or implement the smallest
+record a main-agent `Ruling:` and re-evaluate the plan or implement the smallest
 safe change directly.
 
 ## Unclear or conflicting feedback

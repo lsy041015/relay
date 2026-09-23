@@ -1,7 +1,7 @@
 # Implementation Worker Prompt
 
 Fill this template for one bounded implementation handoff. The controller
-must invoke it with `model = "gpt-5.6-luna"`, `reasoning_effort = "xhigh"`, and
+must invoke it with `model = "gpt-6-luna"`, `reasoning_effort = "xhigh"`, and
 `fork_turns = "none"`.
 
 ```text
@@ -33,13 +33,13 @@ safety requirements intact.
 
 Implement only the requested result. Do not widen the file list, invent
 architecture, or add dependencies without a settled decision. Do not ask for
-permission for actions already authorized by this brief. Ask Astra only when a
+permission for actions already authorized by this brief. Ask the main agent only when a
 missing decision makes the task impossible or unsafe.
 
 You do not dispatch subagents. Do not create an implementer, reviewer,
 analyst, planner, or helper. Do not dispatch a separate code review; self-review
 means inspect your own diff and run the stated tests. Investigate and debug
-failures within this implementation task. Astra owns independent review and
+failures within this implementation task. The main agent owns independent review and
 re-review.
 
 Before reporting:

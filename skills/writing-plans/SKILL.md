@@ -1,13 +1,13 @@
 ---
 name: writing-plans
-description: Use when an approved design or specification needs a concrete multi-step implementation plan before coding
+description: "Use when a settled design needs multiple verifiable implementation steps. Skip ceremonial plans for obvious small changes."
 ---
 
 # Writing Plans
 
 Write the plan for the engineer who must implement it after context has been
 compressed. The approved spec is the authority; the plan records how the
-repository will satisfy it. Astra writes and reviews the plan. There is no
+repository will satisfy it. The main agent writes and reviews the plan. There is no
 plan-reviewer dispatch.
 
 ## Before writing
@@ -65,21 +65,22 @@ Read the completed plan once from top to bottom and check:
 - a worker can implement the task without inventing a design decision;
 - scope and complexity are the smallest adequate shape.
 
-Fix gaps inline. The user reviews and approves the written plan before
-implementation starts. Use `superpowers-astra-luna:subagent-driven-development`
+Fix gaps inline. Honor a user-requested plan approval gate and ask about any
+unresolved consequential decision. Otherwise the existing task authorization
+permits execution; creating a plan does not add a new approval requirement. Use `superpowers-astra-luna:subagent-driven-development`
 for bounded delegated work or `superpowers-astra-luna:executing-plans` for
 inline execution.
 
 ## Execution handoff
 
-The main Astra session owns the plan, task selection, and code review. When a
+The main session owns the plan, task selection, and code review. When a
 task is clear and worth delegation, it creates one Luna worker with the exact
-`gpt-5.6-luna` / `xhigh` / `fork_turns = "none"` settings and a focused task
+`gpt-6-luna` / `xhigh` / `fork_turns = "none"` settings and a focused task
 brief. Related fixes return to that same worker. A second worker is permitted
 only for explicitly requested independent parallel implementation. Reviewers,
 planners, explorers, and diagnostic agents are not spawned.
 
 Keep the plan and progress ledger as the recovery record. If implementation
-reveals a plan defect, Astra records a `Ruling:` with the chosen correction and
+reveals a plan defect, the main agent records a `Ruling:` with the chosen correction and
 why it is safe before continuing. Do not silently rewrite requirements in a
 worker prompt.

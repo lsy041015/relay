@@ -68,6 +68,10 @@ class WorktreeInstructionTests(unittest.TestCase):
         actual = subprocess.run(["git", "-C", str(expected), "rev-parse", "--show-toplevel"],
                                 check=True, capture_output=True, text=True)
         self.assertEqual(Path(actual.stdout.strip()), expected)
+        git_dir = subprocess.run(["git", "-C", str(expected), "rev-parse", "--git-dir"],
+                                 check=True, capture_output=True, text=True).stdout.strip()
+        self.assertEqual((Path(git_dir) / "relay-owned-worktree").read_text().strip(),
+                         str(expected))
 
 
 if __name__ == "__main__":

@@ -6,7 +6,7 @@ description: Use when an approved implementation plan should be executed in the 
 # Executing Plans
 
 Execute an approved plan inline when the user chose that path, the change is
-small, or delegation is unavailable. Astra performs the implementation,
+small, or delegation is unavailable. The main agent performs the implementation,
 review, re-review, and final verification in this session. This skill has no
 fresh-reviewer branch.
 
@@ -42,7 +42,7 @@ order and keep the change at the stated scope.
   evidence or execute the complete command and compare its output to the
   expectation. If code is wrong, use
   `superpowers-astra-luna:systematic-debugging`; if the plan is wrong, record
-  an Astra `Ruling:` and continue with the smallest spec-consistent change.
+  a main-agent `Ruling:` and continue with the smallest spec-consistent change.
 - Keep focused tests near the task and run the task's final verification before
   marking it complete. Record the command, result, and relevant evidence in
   the ledger. Commit only when the plan or repository workflow requires it.

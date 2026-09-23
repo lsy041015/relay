@@ -760,7 +760,7 @@ This approach ensures you're solving actual problems rather than anticipating re
 
 ### Develop Skills iteratively in the main session
 
-The main Astra session designs, tests, and refines the Skill. It may observe a
+The main session designs, tests, and refines the Skill. It may observe a
 real task in the same session or use an already-authorized Luna implementation
 worker for implementation behavior. Do not create a separate evaluator,
 reviewer, or analyst worker for this cycle.
@@ -791,17 +791,17 @@ reviewer, or analyst worker for this cycle.
 
 The same evidence cycle continues when improving Skills:
 
-* **Designing and reviewing in Astra**
+* **Designing and reviewing in the main session**
 * **Testing the Skill in the main session or an authorized implementation turn**
 * **Recording observed behavior** and applying the smallest evidence-backed correction
 
-1. **Use the Skill in real workflows**: Run actual tasks in Astra, not only hypothetical summaries.
+1. **Use the Skill in real workflows**: Run actual tasks in the main session, not only hypothetical summaries.
 
 2. **Observe behavior**: Note where the current session or authorized worker struggles, succeeds, or makes unexpected choices.
 
    **Example observation**: "The task wrote the query but forgot to filter out test accounts, even though the Skill mentions this rule."
 
-3. **Improve in Astra**: Record the current SKILL.md and the evidence, then adjust the wording or structure that allowed the miss.
+3. **Improve in the main session**: Record the current SKILL.md and the evidence, then adjust the wording or structure that allowed the miss.
 
 4. **Review the change**: Make the rule prominent and operational without duplicating the workflow or adding unsupported claims.
 

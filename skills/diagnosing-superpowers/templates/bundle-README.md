@@ -23,10 +23,10 @@ reader's job.
 
 - `report.md` — the diagnosis report (problem statement, verdict,
   environment, sessions, timeline, findings, involvement, coverage notes).
-- `case.md` — the case file Astra's analysis passes worked from.
+- `case.md` — the case file the main agent's analysis passes worked from.
 - `environment.json` — machine-readable copy of the environment section.
 - `timeline.md` — the per-turn timeline.
-- `findings/<dimension>.md` — raw Astra findings per dimension.
+- `findings/<dimension>.md` — raw main agent findings per dimension.
 - `transcripts/<session-id>.md` — condensed per-turn rendering of each
   examined session (never the raw JSONL). Tool-result bodies by level:
 

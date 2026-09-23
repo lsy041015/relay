@@ -1,6 +1,6 @@
 ---
 name: using-git-worktrees
-description: Use when starting feature work that needs isolation from current workspace or before executing implementation plans - ensures an isolated workspace exists via native tools or git worktree fallback
+description: "Use when an authorized coding task needs an isolated checkout. Reuse existing isolation; small safe edits do not require a worktree."
 ---
 
 # Using Git Worktrees
@@ -38,11 +38,11 @@ Report with branch state:
 
 **If `GIT_DIR == GIT_COMMON` (or in a submodule):** You are in a normal repo checkout.
 
-Has the user already indicated their worktree preference in your instructions? If not, ask for consent before creating a worktree:
-
-> "Would you like me to set up an isolated worktree? It protects your current branch from changes."
-
-Honor any existing declared preference without asking. If the user declines consent, work in place and skip to Step 2.
+Honor the user's workspace preference. Use isolation when concurrent work or
+user changes make it useful; small unambiguous edits can stay in place. Follow
+the host's authorization rules for a reversible worktree operation. Ask only
+when the workspace choice introduces an unresolved conflict or consequential
+tradeoff; do not add a routine consent round to an already authorized task.
 
 ## Step 1: Create Isolated Workspace
 
@@ -50,7 +50,7 @@ Honor any existing declared preference without asking. If the user declines cons
 
 ### 1a. Native Worktree Tools (preferred)
 
-The user has asked for an isolated workspace (Step 0 consent). Do you already have a way to create a worktree? It might be a tool with a name like `EnterWorktree`, `WorktreeCreate`, a `/worktree` command, or a `--worktree` flag. If you do, use it and skip to Step 2.
+Isolation is appropriate under Step 0. Do you already have a way to create a worktree? It might be a tool with a name like `EnterWorktree`, `WorktreeCreate`, a `/worktree` command, or a `--worktree` flag. If you do, use it and skip to Step 2.
 
 Native tools handle directory placement, branch creation, and cleanup automatically. Using `git worktree add` when you have a native tool creates phantom state your harness can't see or manage.
 
@@ -137,6 +137,8 @@ path="$selected/$BRANCH_NAME"
 
 git -C "$repo_root" worktree add -b "$BRANCH_NAME" -- "$path"
 cd "$path"
+git_dir=$(CDPATH= cd -- "$(git rev-parse --git-dir)" && pwd -P)
+pwd -P > "$git_dir/relay-owned-worktree"
 ```
 
 **Sandbox fallback:** If `git worktree add` fails with a permission error (sandbox denial), tell the user the sandbox blocked worktree creation and you're working in the current directory instead. Then run setup and baseline tests in place.

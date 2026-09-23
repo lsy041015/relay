@@ -1,6 +1,6 @@
 # Main Scoped Re-Review Worksheet
 
-Use this worksheet in Astra after the existing implementation worker fixes
+Use this worksheet in the main session after the existing implementation worker fixes
 review findings. It replaces the old re-reviewer dispatch and keeps the pass
 limited to the findings and the fix diff.
 
@@ -33,5 +33,5 @@ Verdict: CLEAN | FINDINGS_REMAIN
 ```
 
 If two failed fix attempts have the same root cause, stop the loop and record the
-Astra decision and its cost if wrong. Otherwise send the next concrete
+main agent's decision and its cost if wrong. Otherwise send the next concrete
 fix to the same Luna worker with `followup_task`.

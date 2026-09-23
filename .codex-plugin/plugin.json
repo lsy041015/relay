@@ -1,10 +1,9 @@
 {
   "author": {
-    "email": "jesse@fsck.com",
-    "name": "Jesse Vincent",
-    "url": "https://github.com/obra"
+    "name": "lsy041015",
+    "url": "https://github.com/lsy041015"
   },
-  "description": "Personal Codex fork: Astra plans and reviews in the main session; Luna xhigh subagents implement bounded tasks.",
+  "description": "Codex workflow skills based on Superpowers 6.4.1: the chosen main model plans and reviews; an optional GPT-6 Luna xhigh worker implements bounded tasks.",
   "homepage": "https://github.com/lsy041015/relay",
   "interface": {
     "brandColor": "#F59E0B",
@@ -16,16 +15,14 @@
     "category": "Developer Tools",
     "composerIcon": "./.codex-plugin/assets/composer-icon.svg",
     "defaultPrompt": [
-      "\uba54\uc778 Astra\uc5d0\uc11c \uacc4\ud68d\u00b7\ub9ac\ubdf0\ud558\uace0, \uad6c\ud604\ub9cc Luna xhigh \uc11c\ube0c\uc5d0\uc774\uc804\ud2b8\uc5d0 \ub9e1\uaca8\uc918.",
+      "\uc120\ud0dd\ud55c \uba54\uc778 \ubaa8\ub378\u00b7\ucd94\ub860 \uc218\uc900\uc744 \uc720\uc9c0\ud558\uace0, \uad6c\ud604\ub9cc GPT-6 Luna xhigh \uc11c\ube0c\uc5d0\uc774\uc804\ud2b8\uc5d0 \ub9e1\uaca8\uc918.",
       "\uc2b9\uc778\ub41c \uacc4\ud68d\uc744 \uad6c\ud604\ud558\uace0 \uba54\uc778 \uc138\uc158\uc5d0\uc11c \uacb0\uacfc\ub97c \uac80\uc99d\ud574\uc918."
     ],
-    "developerName": "Personal fork of Jesse Vincent's Superpowers",
-    "displayName": "Superpowers \u00b7 Astra + Luna",
+    "developerName": "lsy041015 (Superpowers fork)",
+    "displayName": "Relay",
     "logo": "./.codex-plugin/assets/logo.png",
-    "longDescription": "Personal fork of Superpowers 6.4.1 for Codex. The main Astra session handles design, planning, review, debugging decisions and final verification. Reuse a Luna xhigh implementation subagent with bounded context; no reviewer subagents or nested delegation. Includes TDD and verification workflows. Select Astra for the main session separately.",
-    "privacyPolicyURL": "https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement",
-    "shortDescription": "Astra plans and reviews; Luna xhigh implements",
-    "termsOfServiceURL": "https://docs.github.com/en/site-policy/github-terms/github-terms-of-service",
+    "longDescription": "Experimental skills-only Codex fork of Superpowers 6.4.1. The main session keeps the user-selected model and reasoning effort for planning, review, and verification. When appropriate, one focused GPT-6 Luna xhigh worker handles bounded code changes. No MCP server or measured weekly quota savings.",
+    "shortDescription": "Chosen main model plans and reviews; Luna implements bounded tasks",
     "websiteURL": "https://github.com/lsy041015/relay"
   },
   "keywords": [
@@ -42,5 +39,5 @@
   "name": "superpowers-astra-luna",
   "repository": "https://github.com/lsy041015/relay",
   "skills": "./skills/",
-  "version": "6.4.1+codex.20260922043741"
+  "version": "6.4.1+codex.20260923060106"
 }

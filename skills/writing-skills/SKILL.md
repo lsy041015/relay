@@ -11,7 +11,7 @@ verify the rule against the same case. This is TDD applied to a skill. Use
 `superpowers-astra-luna:test-driven-development` for the RED/GREEN discipline
 and `anthropic-best-practices.md` for general authoring guidance.
 
-The main Astra session owns design, baseline analysis, review, and acceptance.
+The main session owns design, baseline analysis, review, and acceptance.
 Do not create evaluation, review, or analyst agents. If a pressure scenario
 must exercise a delegated implementation behavior, use only an already
 authorized Luna implementation worker with the exact task scope; an evaluator

@@ -1,6 +1,6 @@
 # Main Plan Review Worksheet
 
-Use this worksheet in Astra after writing a plan. It replaces the old
+Use this worksheet in the main session after writing a plan. It replaces the old
 plan-reviewer dispatch.
 
 ```text

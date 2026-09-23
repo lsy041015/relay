@@ -5,10 +5,10 @@ description: Use when a Superpowers session has repeated work, ignored a plan, s
 
 # Diagnosing Superpowers
 
-Astra performs the diagnosis. This skill reports what happened with transcript
+The main agent performs the diagnosis. This skill reports what happened with transcript
 evidence; it does not create an analyst, audit, reviewer, or escalation agent,
 and it does not prescribe a Superpowers change. Dimension prompts are worksheets
-for Astra's own passes.
+for the main agent's own passes.
 
 ## Workflow
 
@@ -25,7 +25,7 @@ Create a todo per applicable step and keep the original records read-only.
    `~/.superpowers/diagnosing-superpowers/<session-id>/` and fill
    `templates/case.md` with provenance and record meanings.
 3. **Triage.** Read the reported region yourself. Run the dimension prompts in
-   `prompts/` as sequential Astra analysis passes: skill timeline, plan
+   `prompts/` as sequential main agent analysis passes: skill timeline, plan
    adherence, repeated work, stumbles, quality evidence, request conflicts,
    and cost/time. Use `references/context-safety.md` for every read. For a
    long or unpredictable transcript, process and aggregate it with

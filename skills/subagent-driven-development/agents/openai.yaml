@@ -1,3 +1,3 @@
 interface:
   display_name: "Subagent-Driven Development"
-  short_description: "Execute plans with one Luna worker and Astra review"
+  short_description: "Execute plans with one Luna worker and main-session review"

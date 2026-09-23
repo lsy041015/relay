@@ -1,3 +1,3 @@
 interface:
   display_name: "Diagnosing Superpowers"
-  short_description: "Investigate sessions in Astra with transcript evidence"
+  short_description: "Investigate sessions in the main session with transcript evidence"

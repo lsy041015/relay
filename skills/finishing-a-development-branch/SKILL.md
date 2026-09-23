@@ -106,8 +106,9 @@ If tests fail on the merged result: stop, leave the worktree and branch in
 place, and investigate — nothing has been pushed, so the merge is local
 and recoverable.
 
-Once the merged result is green: clean up the worktree (Step 6), then
-delete the branch:
+Once the merged result is green: clean up the worktree (Step 6). Delete
+the branch only if that worktree was removed; a preserved worktree keeps
+its branch:
 
 ```bash
 git branch -d <feature-branch>
@@ -153,7 +154,8 @@ MAIN_ROOT=$(git -C "$(git rev-parse --git-common-dir)/.." rev-parse --show-tople
 cd "$MAIN_ROOT"
 ```
 
-Then clean up the worktree (Step 6) and force-delete the branch:
+Then clean up the worktree (Step 6). Force-delete the branch only if
+that worktree was removed:
 
 ```bash
 git branch -D <feature-branch>
@@ -169,12 +171,17 @@ Step 2, from before that directory change.
 
 **If `GIT_DIR == GIT_COMMON`:** Normal repo, no worktree to clean up. Done.
 
-**If `WORKTREE_PATH` is under `.worktrees/` or `worktrees/`:** Superpowers
-created this worktree — we own cleanup:
+**If the Git administrative directory has a Relay ownership marker matching
+the physical worktree path:** Relay created this worktree and may clean it up:
 
 ```bash
-git worktree remove "$WORKTREE_PATH"
-git worktree prune  # Self-healing: clean up any stale registrations
+if [ -f "$GIT_DIR/relay-owned-worktree" ] &&
+   [ "$(cat "$GIT_DIR/relay-owned-worktree")" = "$(CDPATH= cd -- "$WORKTREE_PATH" && pwd -P)" ]; then
+  git worktree remove "$WORKTREE_PATH"
+  git worktree prune  # Clean up stale registrations after removal
+else
+  echo "Worktree was not created by Relay; leaving it in place."
+fi
 ```
 
 **If removal is refused** (`contains modified or untracked files`): the
@@ -200,8 +207,8 @@ Which?
 
 Carry out the choice, then remove the worktree.
 
-**Otherwise:** The host environment owns this workspace — leave it in
-place. If your platform provides a workspace-exit tool, use it.
+**Otherwise:** The host environment owns this workspace — leave it and
+its branch in place. If your platform provides a workspace-exit tool, use it.
 
 ## Quick Reference
 
@@ -221,7 +228,7 @@ place. If your platform provides a workspace-exit tool, use it.
 | "They seem done with this feature — I'll offer to discard it" | The menu is complete as written. Discard happens only when your human partner asks for it in so many words. |
 | "'Yeah, get rid of it' counts as confirmation" | Only the typed word `discard` authorizes deletion. |
 | "The PR is up, so the worktree is clutter now" | PR feedback gets fixed in that worktree. It stays until the work lands. |
-| "This other worktree looks stale — I'll clean it too" | Clean up only worktrees under `.worktrees/` or `worktrees/`. Everything else belongs to the host. |
+| "This other worktree looks stale — I'll clean it too" | Clean up only worktrees with a matching Relay ownership marker. Directory names do not prove ownership. |
 | "Removal refused — `--force` is just finishing the cleanup" | The refusal means files exist only in that worktree. `--force` destroys them permanently. Show your human partner and ask. |
 | "The merged-result failure is probably flaky" | A failing merged result stops everything. Branch and worktree stay put while you investigate. |
 | "The base branch is obviously main" | Confirm the fork point or ask. Merging into the wrong base is expensive to undo. |

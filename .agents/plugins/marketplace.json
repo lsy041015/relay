@@ -1,0 +1,21 @@
+{
+  "name": "relay",
+  "interface": {
+    "displayName": "Relay"
+  },
+  "plugins": [
+    {
+      "name": "superpowers-astra-luna",
+      "source": {
+        "source": "url",
+        "url": "https://github.com/lsy041015/relay.git",
+        "ref": "main"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    }
+  ]
+}
