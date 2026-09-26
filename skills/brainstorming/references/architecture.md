@@ -7,4 +7,4 @@ Record components, data flow, inputs/outputs, failure handling, compatibility, r
 Keep boundaries understandable and independently verifiable. Avoid abstractions, dependencies or cleanup unrelated to the requested outcome.
 Save the design at the user's location, otherwise `docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md` when a durable artifact is useful. Do not create a commit solely to satisfy this workflow.
 Review once for missing requirements, contradictions, placeholders, unverifiable claims and scope expansion. Correct supported gaps. Ask about unresolved consequential choices; do not ask again about already approved scope.
-If the user requested approval before implementation, present the concrete design and wait. Otherwise continue authorized work, using `superpowers-astra-luna:writing-plans` when the implementation needs multiple verifiable steps.
+If the user requested approval before implementation, present the concrete design and wait. Otherwise continue authorized work, using `relay:writing-plans` when the implementation needs multiple verifiable steps.

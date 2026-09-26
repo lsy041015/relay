@@ -5,7 +5,7 @@
   },
   "plugins": [
     {
-      "name": "superpowers-astra-luna",
+      "name": "relay",
       "source": {
         "source": "url",
         "url": "https://github.com/lsy041015/relay.git",

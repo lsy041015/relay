@@ -34,7 +34,7 @@ even when a committed range exists; never force a dummy commit.
 Do not invent an independent reviewer or ask another agent to inspect a part
 of the diff. The main agent owns this review and the subsequent re-review. If a finding
 is real, send a precise fix to the same implementation worker with
-`followup_task`. If two failed fix attempts have the same root cause, stop and
+`followup_task` (Codex) / `SendMessage` (Claude Code). If two failed fix attempts have the same root cause, stop and
 write a main-agent Ruling before changing the plan or fixing inline.
 
 ## Output

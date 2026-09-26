@@ -1,6 +1,6 @@
 # Muse Compatibility Note
 
-The personal edition is Codex-only. This file records source vocabulary for a
+The personal edition runs on Codex and Claude Code. This file records source vocabulary for a
 future port and is not an active Muse model or delegation path.
 
 | Action | Typical Muse tool |

@@ -12,7 +12,7 @@ requirements that could be interpreted two ways, scope spanning unrelated
 subsystems, unrequested features, and missing acceptance or safety conditions.
 Compare the document with the conversation's settled decisions and preserve
 the user's approval gates. Fix concrete issues inline before handing the spec
-to `superpowers-astra-luna:writing-plans`.
+to `relay:writing-plans`.
 
 ```text
 Status: Approved | Issues Found

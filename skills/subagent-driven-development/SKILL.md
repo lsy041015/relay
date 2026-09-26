@@ -7,20 +7,20 @@ description: Use when an approved implementation plan has a clear unit that can 
 
 Use this workflow when a plan has a bounded implementation result that is
 worth delegating. The main agent remains the controller: it decides scope, reads the
-plan, reviews every change, and integrates the result. Luna is an
+plan, reviews every change, and integrates the result. The implementer is an
 implementation worker, not a second controller.
 
-Use `superpowers-astra-luna:executing-plans` when the user chose inline work,
+Use `relay:executing-plans` when the user chose inline work,
 the change is tiny, or the host has no usable worker tool. Use
-`superpowers-astra-luna:dispatching-parallel-agents` only for explicitly
+`relay:dispatching-parallel-agents` only for explicitly
 requested independent parallel implementation.
 
 ## Invariants
 
 - The main session keeps the user's selected model and reasoning effort; this
   workflow does not switch or override either setting.
-- Every worker creation explicitly sets `model = "gpt-6-luna"`,
-  `reasoning_effort = "xhigh"`, and `fork_turns = "none"`.
+- Every worker is created with
+  the host implementer preset (Codex: `gpt-6-luna` / `xhigh` / `fork_turns = "none"`; Claude Code: `relay:implementer` agent = `claude-sonnet-5` / `high`).
 - Workers never spawn workers, reviewers, analysts, planners, or helpers. They
   may self-review their diff and investigate implementation failures as part
   of the assigned task.
@@ -40,7 +40,7 @@ comparison instead; the Git helpers do not apply. Do not initialize a
 repository or create commits merely to satisfy workflow bookkeeping.
 
 1. Confirm the approved plan and its Global Constraints. Use
-   `superpowers-astra-luna:using-git-worktrees` to create or verify an
+   `relay:using-git-worktrees` to create or verify an
    isolated workspace; never assume a clean baseline.
 2. Resolve this plan's workspace with `scripts/sdd-workspace PLAN_FILE` and
    use its `progress.md` ledger. A ledger for another plan, or the old flat
@@ -64,7 +64,7 @@ outside the user's authorized scope.
 ### 1. Choose the execution path
 
 Keep a one-file mechanical edit, lookup, or short verification in the main session. For a
-clear multi-step implementation result, dispatch one Luna worker using
+clear multi-step implementation result, dispatch one implementer worker using
 `implementer-prompt.md`. The brief must contain only the goal, acceptance
 conditions, exact allowed files, interfaces and settled decisions, tests,
 required source paths, and report path. The worker receives no inherited
@@ -122,7 +122,7 @@ requirement that cannot be verified enters the fix loop.
 
 ### 4. Fix loop
 
-Send concrete findings to the same worker with `followup_task`, using
+Send concrete findings to the same worker with `followup_task` (Codex) / `SendMessage` (Claude Code), using
 `re-review-prompt.md` to define the scope. The worker appends a fix report,
 runs the covering tests, and returns the same status contract. The main agent reads the
 fix diff and re-reviews only the findings and touched code. New findings in the
@@ -151,15 +151,15 @@ merge base when there is a committed range and reviews it with
 staged and unstaged diffs plus untracked task files directly. If the work is
 entirely uncommitted, skip the commit-only helper; do not force a dummy commit.
 No final reviewer is created.
-The main agent applies `superpowers-astra-luna:verification-before-completion` to the
+The main agent applies `relay:verification-before-completion` to the
 required final checks and the combined state. Check every ledger Ruling and
 deferred Minor, and record any final fix. A remaining Critical or Important
 issue is either corrected inline or sent as a concrete follow-up to the
-existing Luna worker; the main agent re-reviews the actual fix. There is no second
+existing implementer worker; the main agent re-reviews the actual fix. There is no second
 review agent or unlimited fix cycle.
 
 Report verification evidence, failures, and environment limits.
-Use `superpowers-astra-luna:finishing-a-development-branch` only after the
+Use `relay:finishing-a-development-branch` only after the
 requested integration decision is ready. Never delete the plan workspace
 until the ledger and required artifacts are preserved or the user authorized
 the cleanup.
@@ -171,8 +171,8 @@ Task 2: add retry behavior
 Brief: /workspace/.superpowers/sdd/retry/task-2-brief.md
 Allowed files: src/retry.ts, test/retry.test.ts
 Acceptance: bounded retries, abort preserved, focused test command
-Worker: gpt-6-luna / xhigh / fork_turns=none
+Worker: Codex gpt-6-luna / xhigh / fork_turns=none | Claude Code relay:implementer (claude-sonnet-5 / high)
 Report: /workspace/.superpowers/sdd/retry/task-2-report.md
 ```
 
-Internal skill links use the `superpowers-astra-luna:` namespace.
+Internal skill links use the `relay:` namespace.

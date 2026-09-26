@@ -40,7 +40,7 @@ Save the plan at the repository's agreed path, normally
    `### 1. 입력 검증`.
 5. **Verification** — focused tests per task, integration checks, and final
    commands with expected evidence. Apply
-   `superpowers-astra-luna:verification-before-completion` when deciding
+   `relay:verification-before-completion` when deciding
    whether matching evidence can be reused or a command must run. Include TDD
    RED/GREEN steps for behavior changes. Review committed ranges with
    `review-package` and always include staged and unstaged diffs plus the
@@ -67,15 +67,15 @@ Read the completed plan once from top to bottom and check:
 
 Fix gaps inline. Honor a user-requested plan approval gate and ask about any
 unresolved consequential decision. Otherwise the existing task authorization
-permits execution; creating a plan does not add a new approval requirement. Use `superpowers-astra-luna:subagent-driven-development`
-for bounded delegated work or `superpowers-astra-luna:executing-plans` for
+permits execution; creating a plan does not add a new approval requirement. Use `relay:subagent-driven-development`
+for bounded delegated work or `relay:executing-plans` for
 inline execution.
 
 ## Execution handoff
 
 The main session owns the plan, task selection, and code review. When a
-task is clear and worth delegation, it creates one Luna worker with the exact
-`gpt-6-luna` / `xhigh` / `fork_turns = "none"` settings and a focused task
+task is clear and worth delegation, it creates one implementer worker
+with the host implementer preset (Codex: `gpt-6-luna` / `xhigh` / `fork_turns = "none"`; Claude Code: `relay:implementer` agent = `claude-sonnet-5` / `high`) and a focused task
 brief. Related fixes return to that same worker. A second worker is permitted
 only for explicitly requested independent parallel implementation. Reviewers,
 planners, explorers, and diagnostic agents are not spawned.

@@ -1,8 +1,8 @@
 # Implementation Worker Prompt
 
 Fill this template for one bounded implementation handoff. The controller
-must invoke it with `model = "gpt-6-luna"`, `reasoning_effort = "xhigh"`, and
-`fork_turns = "none"`.
+must dispatch it with
+the host implementer preset (Codex: `gpt-6-luna` / `xhigh` / `fork_turns = "none"`; Claude Code: `relay:implementer` agent = `claude-sonnet-5` / `high`).
 
 ```text
 You are the implementation worker for Task [N]: [TASK_NAME].
@@ -46,7 +46,7 @@ Before reporting:
 1. Inspect the final diff for completeness, scope, regressions, and accidental
    edits.
 2. Run the focused tests and required verification, or reuse evidence only
-   under `superpowers-astra-luna:verification-before-completion`. Capture the
+   under `relay:verification-before-completion`. Capture the
    command, cwd, code state, relevant environment, exit code, and log path or
    bounded result in [REPORT_FILE].
 3. If TDD was required, record RED and GREEN evidence.

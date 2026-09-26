@@ -70,7 +70,7 @@ Reasoning: <one or two technical sentences>
 ```
 
 Critical and Important findings go to the existing implementation worker as a
-focused `followup_task` when one exists; the main agent may fix a small issue inline.
+focused `followup_task` (Codex) / `SendMessage` (Claude Code) when one exists; the main agent may fix a small issue inline.
 After two failed fix attempts with the same root cause, record a main-agent Ruling
 and change the plan or report the blocker. Minor findings and out-of-scope
 observations go in the ledger for final triage.

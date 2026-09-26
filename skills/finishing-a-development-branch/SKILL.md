@@ -13,7 +13,7 @@ description: Use when implementation is complete, all tests pass, and you need t
 
 ## Step 1: Verify Tests
 
-Apply **superpowers-astra-luna:verification-before-completion** to the
+Apply **relay:verification-before-completion** to the
 state you are about to integrate. Inspect matching evidence for the project's
 required checks, including its full suite when required. Run only missing,
 invalidated, or still-unverified checks.

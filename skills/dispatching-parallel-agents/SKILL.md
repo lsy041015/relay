@@ -18,17 +18,17 @@ A worker may not dispatch its own children.
 
 For every independent unit, provide a separate brief with its exact goal,
 allowed files, settled interfaces, acceptance checks, tests, and report path.
-Every call explicitly uses `gpt-6-luna`, `reasoning_effort = "xhigh"`, and
-`fork_turns = "none"`. Make the calls concurrently only after confirming no
+Every call uses
+the host implementer preset (Codex: `gpt-6-luna` / `xhigh` / `fork_turns = "none"`; Claude Code: `relay:implementer` agent = `claude-sonnet-5` / `high`). Make the calls concurrently only after confirming no
 write or state dependency can overlap.
 
 When all workers return, the main agent reads every actual diff and report, checks for
 overlap and integration conflicts, and applies
-`superpowers-astra-luna:verification-before-completion` to the combined
+`relay:verification-before-completion` to the combined
 state. Reuse a matching result only when its command, scope, environment, exit
 code, and actual log still apply; otherwise run the affected integration
 verification. Worker reports are evidence, not approval. Send a concrete fix to the same
-worker with `followup_task` when possible; do not create a reviewer or a fresh
+worker with `followup_task` (Codex) / `SendMessage` (Claude Code) when possible; do not create a reviewer or a fresh
 fixer. If two failed fix attempts have the same root cause, the main agent stops retrying,
 records a Ruling, and changes the plan or fixes inline.
 
@@ -43,4 +43,4 @@ records a Ruling, and changes the plan or fixes inline.
 
 If any answer is uncertain, do not parallelize. Use one worker or execute in
 the main session. Internal references use the
-`superpowers-astra-luna:` namespace.
+`relay:` namespace.

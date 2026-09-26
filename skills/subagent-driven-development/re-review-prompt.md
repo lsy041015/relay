@@ -34,4 +34,4 @@ Verdict: CLEAN | FINDINGS_REMAIN
 
 If two failed fix attempts have the same root cause, stop the loop and record the
 main agent's decision and its cost if wrong. Otherwise send the next concrete
-fix to the same Luna worker with `followup_task`.
+fix to the same implementer worker with `followup_task` (Codex) / `SendMessage` (Claude Code).

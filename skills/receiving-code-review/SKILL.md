@@ -20,8 +20,8 @@ Do not perform agreement or blind implementation.
    a covering test. Keep user changes and the approved scope intact.
 6. Re-run the relevant checks, inspect the fix diff, and report the result.
 
-For a delegated task, send the concrete fix to the same Luna worker with
-`followup_task`: include the finding, file and location, why it matters, the
+For a delegated task, send the concrete fix to the same implementer worker with
+`followup_task` (Codex) / `SendMessage` (Claude Code): include the finding, file and location, why it matters, the
 acceptance condition, and the covering test. The main agent performs the re-review.
 Small corrections may stay inline. Do not create a new reviewer, fixer,
 analyst, or model escalation. If two failed fix attempts have the same root cause,
@@ -48,4 +48,4 @@ show the technical evidence; do not silently replace it.
   If later evidence changes the ruling, correct it and continue without
   performative apology.
 
-Internal references use the `superpowers-astra-luna:` namespace.
+Internal references use the `relay:` namespace.

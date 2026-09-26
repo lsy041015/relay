@@ -1,6 +1,6 @@
 # Antigravity Compatibility Note
 
-The personal edition is Codex-only. Antigravity terms below explain source
+The personal edition runs on Codex and Claude Code. Antigravity terms below explain source
 compatibility and are not an operational delegation path.
 
 | Action | Typical Antigravity mechanism |

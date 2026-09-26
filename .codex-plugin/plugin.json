@@ -36,8 +36,8 @@
     "workflow"
   ],
   "license": "MIT",
-  "name": "superpowers-astra-luna",
+  "name": "relay",
   "repository": "https://github.com/lsy041015/relay",
   "skills": "./skills/",
-  "version": "6.4.1+codex.20260923060106"
+  "version": "6.4.1+codex.20260926"
 }

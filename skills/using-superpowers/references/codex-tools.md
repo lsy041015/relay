@@ -63,7 +63,7 @@ relevant evidence.
 
 Before using worktree or branch operations, use read-only git inspection to
 distinguish a linked worktree, an ordinary checkout, and detached HEAD. Apply
-`superpowers-astra-luna:using-git-worktrees` for isolation and preserve
+`relay:using-git-worktrees` for isolation and preserve
 unrelated user changes. Do not delete a workspace or alter a shared branch
 without the authorization required by the host and the user request.
 

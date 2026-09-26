@@ -3,8 +3,8 @@
 > Learn how to write effective Skills that agents can discover and use successfully.
 
 This upstream reference is retained for authoring patterns. The personal
-edition is Codex-only: its active role and model policy comes from
-`superpowers-astra-luna:using-superpowers`. Do not use the Claude examples or
+edition runs on Codex and Claude Code: its active role and model policy comes from
+`relay:using-superpowers`. Do not use the Claude examples or
 model tables below as an operational routing or delegation instruction.
 
 Good Skills are concise, well-structured, and tested with real usage. This guide provides practical authoring decisions to help you write Skills that agents can discover and use effectively.
@@ -783,7 +783,7 @@ reviewer, or analyst worker for this cycle.
 
 5. **Improve information architecture**: Organize the content so heavy references are separate and directly linked.
 
-6. **Test on similar tasks**: Run related cases in the main session or, when implementation behavior requires it, through the authorized Luna worker. Observe whether the Skill is found and applied.
+6. **Test on similar tasks**: Run related cases in the main session or, when implementation behavior requires it, through the authorized implementer worker. Observe whether the Skill is found and applied.
 
 7. **Iterate based on observation**: If a case struggles or misses something, record the exact evidence and update the smallest responsible section.
 

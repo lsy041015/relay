@@ -8,7 +8,7 @@ description: Use when a completed change needs a requirements and quality review
 In the Relay workflow, requesting review means preparing an evidence-based
 review pass for the main session. It does not create a reviewer agent.
 The main agent reviews the actual diff, traces relevant call paths, and performs any
-necessary re-review after the existing Luna implementation worker fixes it.
+necessary re-review after the existing implementer worker fixes it.
 
 ## When to review
 
@@ -35,7 +35,7 @@ independent review when the main agent performed the review.
    security, data loss, accessibility, calibration and hardware safety,
    compatibility, tests, and scope. Read outside the diff only for a named
    concrete risk.
-4. Apply `superpowers-astra-luna:verification-before-completion` to the
+4. Apply `relay:verification-before-completion` to the
    reported evidence and current change. Inspect actual logs; reuse valid
    results and rerun only checks with missing, invalidated, or uncertain
    evidence.
@@ -44,7 +44,7 @@ independent review when the main agent performed the review.
    - Important: a required behavior, regression, or fragile implementation;
    - Minor: a useful polish item that does not block the task.
 6. Record the verdict and Minor items in the ledger. Send Critical or
-   Important fixes to the same worker with `followup_task`, including file,
+   Important fixes to the same worker with `followup_task` (Codex) / `SendMessage` (Claude Code), including file,
    location, cause, acceptance condition, and covering tests. The main agent performs
    the scoped re-review.
 

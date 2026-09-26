@@ -1,0 +1,14 @@
+{
+  "name": "relay",
+  "owner": {
+    "name": "lsy041015",
+    "url": "https://github.com/lsy041015"
+  },
+  "plugins": [
+    {
+      "name": "relay",
+      "source": "./",
+      "description": "Main session plans and reviews; Sonnet 5 high implementer subagent codes bounded tasks."
+    }
+  ]
+}

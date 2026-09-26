@@ -75,6 +75,6 @@ Create a todo per applicable step and keep the original records read-only.
 | Ignored plan | plan-adherence and compaction events |
 | Skill never fired | skill-timeline |
 
-Internal skill links use the `superpowers-astra-luna:` namespace. The personal
-edition is Codex-operated; no other host's delegation guide is an active
+Internal skill links use the `relay:` namespace. The personal
+edition runs on Codex and Claude Code; no other host's delegation guide is an active
 execution path.

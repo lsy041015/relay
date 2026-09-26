@@ -22,31 +22,31 @@ This skill does not select, switch, or override either setting. The main agent
 handles intake, brainstorming and planning, design decisions, code
 review and re-review, diagnosis, integration, and final verification.
 
-The only delegated role is an implementation worker. Use `gpt-6-luna` with
-`reasoning_effort = "xhigh"` and `fork_turns = "none"`. Give it a bounded,
+The only delegated role is an implementation worker. Dispatch it with
+the host implementer preset (Codex: `gpt-6-luna` / `xhigh` / `fork_turns = "none"`; Claude Code: `relay:implementer` agent = `claude-sonnet-5` / `high`) and no inherited history. Give it a bounded,
 reviewable implementation result, the exact files it may touch, acceptance
 criteria, tests, and report path. The worker implements, tests, self-reviews,
 and investigates failures within that task. It never delegates an independent
 planning, diagnosis, or review role and never creates another worker.
 
-Use one worker by default and reuse it for related fixes with `followup_task`.
+Use one worker by default and reuse it for related fixes with `followup_task` (Codex) / `SendMessage` (Claude Code).
 Do not create a fresh reviewer, planner, explorer, analyst, or escalation
 worker. After two failed fix attempts with the same root cause, stop retrying and
 have the main agent re-evaluate the cause, scope, or implementation directly.
 
 Small edits, lookups, reviews, re-reviews, diagnosis, and short verification
-can stay in the main session. Multiple Luna workers are allowed only when the
+can stay in the main session. Multiple implementer workers are allowed only when the
 user explicitly requests parallel implementation and the files and state are
-independent. Every such worker still uses the exact Luna/xhigh/no-history
-settings and may not spawn children.
+independent. Every such worker still uses the same host implementer
+preset and may not spawn children.
 
 Do not claim independent review, diagnosis, or validation that was not run.
 Keep TDD, systematic debugging, user-change protection, security checks,
 hardware calibration and other safety requirements from the relevant skills.
 
-## Codex reference
+## Host reference
 
-This personal edition is Codex-only. Use `references/codex-tools.md` for the
-current Codex tool syntax. The other platform files are retained as source
+This edition runs on Codex and Claude Code. Use `references/codex-tools.md` on
+Codex and `references/claude-code-tools.md` on Claude Code for exact tool syntax. The other platform files are retained as source
 compatibility notes and are not active routing or delegation instructions.
-Internal skill links use the `superpowers-astra-luna:` namespace.
+Internal skill links use the `relay:` namespace.

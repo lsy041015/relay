@@ -1,6 +1,6 @@
 # Pi Compatibility Note
 
-This personal edition is Codex-operated. Pi terms are retained only for source
+This personal edition runs on Codex and Claude Code. Pi terms are retained only for source
 compatibility and are not an active model or delegation guide.
 
 | Action | Typical Pi tool |

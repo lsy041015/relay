@@ -16,7 +16,7 @@ subagent.
    recipe, and rerun the affected scenario. Do not silently declare success
    from reading the document.
 
-Use `superpowers-astra-luna:test-driven-development` for the general RED,
+Use `relay:test-driven-development` for the general RED,
 GREEN, and refactor discipline. A delegated implementation worker may help
 exercise a behavior only when the main agent has already authorized that implementation
 task; never create a review, analysis, or evaluation worker for this test.
@@ -62,7 +62,7 @@ choose enough runs to answer the concrete question and preserve the evidence.
 | "It already works." | Write and run the failing check before keeping the implementation. |
 | "The deadline means skip the skill." | Apply the smallest required workflow and report the measured delay. |
 | "A reviewer will catch it." | The main session owns review; verify the behavior now. |
-| "Ask another agent." | Only the approved Luna implementation role may be delegated; do the decision in the main session. |
+| "Ask another agent." | Only the approved implementer role may be delegated; do the decision in the main session. |
 | "The control passed once." | Confirm the control actually showed the baseline failure before generalizing. |
 
 The final report separates baseline behavior, candidate behavior, static checks,

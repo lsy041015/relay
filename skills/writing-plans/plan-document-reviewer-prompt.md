@@ -18,7 +18,7 @@ Read both documents and check:
 - buildability: files, symbols, decisions, tests, expected output, recovery,
   and safety conditions are actionable;
 - role policy: no separate review, exploration, diagnosis, or model-escalation
-  dispatch is required; delegated implementation uses the existing Luna
+  dispatch is required; delegated implementation uses the existing implementer
   worker contract when appropriate.
 
 Output:

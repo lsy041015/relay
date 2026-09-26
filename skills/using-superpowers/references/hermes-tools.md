@@ -1,6 +1,6 @@
 # Hermes Agent Compatibility Note
 
-This personal edition is Codex-operated. These mappings are retained only for
+This personal edition runs on Codex and Claude Code. These mappings are retained only for
 readability when porting source documentation; they are not an active Hermes
 delegation guide.
 
@@ -12,7 +12,7 @@ delegation guide.
 | Search files | `search_files` |
 | Track work | `todo` |
 
-If ported, apply `superpowers-astra-luna:using-superpowers`: the main session
+If ported, apply `relay:using-superpowers`: the main session
 owns plans, diagnosis, reviews, re-reviews, and integration. Delegate only an
 explicitly authorized implementation unit. A worker may self-review and
 debug its implementation but never delegates a non-implementation role or a
